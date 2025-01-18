@@ -17,19 +17,84 @@ import { createStore } from "mipd";
 import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE } from "~/lib/constants";
 
-function ExampleCard() {
+function SocialLinkCard({ name, url, icon }: { name: string, url: string, icon: string }) {
+  const handleClick = useCallback(() => {
+    sdk.actions.openUrl(url);
+  }, [url]);
+
+  return (
+    <div 
+      className="flex items-center gap-4 p-4 border border-neutral-200 rounded-lg hover:bg-neutral-50 cursor-pointer"
+      onClick={handleClick}
+    >
+      <svg 
+        width="24" 
+        height="24" 
+        viewBox="0 0 24 24"
+        className="text-neutral-600"
+      >
+        <path fill="currentColor" d={icon} />
+      </svg>
+      <div className="flex-1">
+        <h3 className="font-medium text-neutral-900">{name}</h3>
+        <p className="text-sm text-neutral-600">{new URL(url).hostname}</p>
+      </div>
+      <svg 
+        width="16" 
+        height="16" 
+        viewBox="0 0 24 24"
+        className="text-neutral-400"
+      >
+        <path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+      </svg>
+    </div>
+  );
+}
+
+function RecentShareCard({ text, url, timestamp }: { text: string, url: string, timestamp: string }) {
+  const handleClick = useCallback(() => {
+    sdk.actions.openUrl(url);
+  }, [url]);
+
+  return (
+    <div 
+      className="p-4 border border-neutral-200 rounded-lg hover:bg-neutral-50 cursor-pointer"
+      onClick={handleClick}
+    >
+      <p className="text-neutral-900">{text}</p>
+      <p className="text-sm text-neutral-500 mt-1">
+        {new Date(timestamp).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric'
+        })}
+      </p>
+    </div>
+  );
+}
+
+function LinkTree() {
   return (
     <Card className="border-neutral-200 bg-white">
       <CardHeader>
-        <CardTitle className="text-neutral-900">Welcome to the Frame Template</CardTitle>
+        <CardTitle className="text-neutral-900">Avneesh's Links</CardTitle>
         <CardDescription className="text-neutral-600">
-          This is an example card that you can customize or remove
+          Connect with me across platforms
         </CardDescription>
       </CardHeader>
-      <CardContent className="text-neutral-800">
-        <p>
-          Your frame content goes here. The text is intentionally dark to ensure good readability.
-        </p>
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <Label className="text-neutral-600">Social Links</Label>
+          {SOCIAL_LINKS.map((link) => (
+            <SocialLinkCard key={link.name} {...link} />
+          ))}
+        </div>
+        
+        <div className="space-y-2">
+          <Label className="text-neutral-600">Recent Shares</Label>
+          {RECENT_SHARES.map((share, index) => (
+            <RecentShareCard key={index} {...share} />
+          ))}
+        </div>
       </CardContent>
     </Card>
   );
@@ -137,7 +202,7 @@ export default function Frame(
     >
       <div className="w-[300px] mx-auto py-2 px-2">
         <h1 className="text-2xl font-bold text-center mb-4 text-neutral-900">{title}</h1>
-        <ExampleCard />
+        <LinkTree />
       </div>
     </div>
   );
