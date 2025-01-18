@@ -1,6 +1,6 @@
-export const PROJECT_ID = 'link-frame-connect';
+export const PROJECT_ID = 'LinkFrameConnect';
 export const PROJECT_TITLE = "LinkFrameConnect";
-export const PROJECT_DESCRIPTION = "Avneesh's Social Links and Recent Shares";
+export const PROJECT_DESCRIPTION = "Your gateway to social connections and shared content on Farcaster";
 
 export const SOCIAL_LINKS = [
   {
